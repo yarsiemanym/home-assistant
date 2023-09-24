@@ -25,3 +25,27 @@ spec:
               cpu: 500m
           ports:
             - containerPort: 8123
+          volumeMounts:
+            - name: data
+              mountPath: /config
+      initContainers:
+        - name: init
+          image: busybox:1.36
+          command:
+            - /bin/sh
+          args:
+            - -c
+            - cp -r /tmp/* /config/
+          volumeMounts:
+            - name: config
+              mountPath: /tmp
+            - name: data
+              mountPath: /config
+      volumes:
+        - name: config
+          configMap:
+            name: home-assistant
+        - name: data
+          persistentVolumeClaim:
+            claimName: home-assistant
+          
