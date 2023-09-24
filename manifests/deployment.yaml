@@ -35,7 +35,7 @@ spec:
             - /bin/sh
           args:
             - -c
-            - cp /tmp/configuration.yaml /config/configuration.yaml && cp /tmp/automations.yaml /config/automations.yaml && cp /tmp/scripts.yaml /config/scripts.yaml && cp /tmp/scenes.yaml /config/scenes.yaml
+            - cp /tmp/configuration.yaml /config/configuration.yaml
           volumeMounts:
             - name: tmp
               mountPath: /tmp
