@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: home-assistant
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: Home Assistant and supporting infrastructure.
+  sourceRepos:
+    - https://github.com/yarsiemanym/home-assistant.git
+  destinations:
+    - namespace: home-assistant
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+  - group: ''
+    kind: Namespace
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: home-assistant
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: home-assistant
+  source:
+    repoURL: https://github.com/yarsiemanym/home-assistant.git
+    targetRevision: HEAD
+    path: manifests
+    directory:
+      exclude: argocd.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: home-assistant
